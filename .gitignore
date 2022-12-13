@@ -1,0 +1,5 @@
+*.pro.user
+*.pro*.user
+ffmpeg
+ffmpeg-5.1.2-full_build-shared/*
+!ffmpeg-5.1.2-full_build-shared/README.txt
