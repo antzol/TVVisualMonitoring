@@ -91,3 +91,10 @@ LIBS += -lavcodec \
 
 RESOURCES += \
     ../images.qrc
+
+#copydata.commands = mklink $$shell_path($$OUT_PWD/tvvm-config.db) $$shell_path($$PWD/../configs/tvvm-config.db)
+copydata.commands = $(COPY_DIR) $$shell_path($$PWD/../configs/tvvm-config.db) $$shell_path($$OUT_PWD)
+first.depends = $(first) copydata
+export(first.depends)
+export(copydata.commands)
+QMAKE_EXTRA_TARGETS += first copydata

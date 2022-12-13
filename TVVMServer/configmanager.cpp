@@ -343,8 +343,7 @@ ConfigManager::ConfigManager(QObject *parent)
 void ConfigManager::initDatabase()
 {
     /// TODO: create new datebase if database file doesn't exist.
-    QString appFolder = QApplication::applicationDirPath() + "/";
-    QString appBase = appFolder + QString::fromStdString(configDbFileName);
+    QString appBase = QString::fromStdString(configDbFileName);
 
     loggable.logMessage(objectName(), QtDebugMsg, "Connect to the config database...");
 

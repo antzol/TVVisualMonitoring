@@ -71,3 +71,10 @@ LIBS += -L$$PWD/../ffmpeg-5.1.2-full_build-shared/bin
 LIBS += -lavcodec \
         -lavformat \
         -lavutil
+
+#copydata.commands = mklink $$shell_path($$OUT_PWD/tvvm-config.db) $$shell_path($$PWD/../configs/tvvm-config.db)
+copydata.commands = $(COPY_DIR) $$shell_path($$PWD/../configs/tvvm-config.db) $$shell_path($$OUT_PWD)
+first.depends = $(first) copydata
+export(first.depends)
+export(copydata.commands)
+QMAKE_EXTRA_TARGETS += first copydata
