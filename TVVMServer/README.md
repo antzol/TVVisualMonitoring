@@ -9,6 +9,6 @@ Main window:
 
 ![TVVM Server - Main Window](../docs/screenshots/tvvm-server/server%20-%20main%20window.png)
 
-View window with multiple TV programs from different sources:
+Viewer window with multiple TV programs from different sources:
 
 ![TVVM Server - Viewer Window](../docs/screenshots/tvvm-server/server%20-%20viewer%20window%2001.png)
