@@ -732,6 +732,7 @@ void Demuxer::reset()
         if (decoders[i])
             resetDecoder(i);
     }
+    decoders.clear();
 
     if (inputFormatContext)
         avformat_close_input(&inputFormatContext);
