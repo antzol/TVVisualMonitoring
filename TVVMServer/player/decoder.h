@@ -26,6 +26,8 @@ public:
     virtual bool open(AVStream *stream);
     bool isOpen() const;
 
+    virtual AVMediaType getMediaType() const;
+
     int decodePacket(const AVPacket *pkt);
     virtual int outputFrame(AVFrame *avFrame) = 0;
 
