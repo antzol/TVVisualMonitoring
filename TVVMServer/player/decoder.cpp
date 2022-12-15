@@ -77,6 +77,12 @@ bool Decoder::isOpen() const
 }
 
 //---------------------------------------------------------------------------------------
+AVMediaType Decoder::getMediaType() const
+{
+    return codecContext->codec->type;
+}
+
+//---------------------------------------------------------------------------------------
 int Decoder::decodePacket(const AVPacket *pkt)
 {
     int result = 0;

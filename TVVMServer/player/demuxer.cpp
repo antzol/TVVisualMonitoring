@@ -492,7 +492,22 @@ void Demuxer::playing()
             Decoder *decoder = decoders[streamIndex];
             if (decoder && decoder->isOpen())
             {
-                result = decoder->decodePacket(receivedPacket);
+                if (decoder->getMediaType() == streams[streamIndex]->type)
+                {
+                    result = decoder->decodePacket(receivedPacket);
+                }
+                else
+                {
+                    QString msg = QString("ERROR. Media types of decoder and packet don't match.\n"
+                                          "- decoder: %1\n"
+                                          "- stream (index/id): %2 / %3\n"
+                                          "- stream type: %4")
+                            .arg(mapAvMediaTypeToString(decoder->getMediaType()))
+                            .arg(receivedPacket->stream_index)
+                            .arg(streams[receivedPacket->stream_index]->id)
+                            .arg(mapAvMediaTypeToString(streams[receivedPacket->stream_index]->type));
+                    loggable.logAvError(objectName(), QtWarningMsg, msg, result);
+                }
             }
         }
 
