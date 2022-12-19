@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QThread>
 
+#include "audiooutput.h"
 #include "demuxer.h"
 #include "loggable.h"
 
@@ -13,11 +14,14 @@ class MediaSource : public QObject
 public:
     explicit MediaSource(int srcId, const QString &srcName, QObject *parent = nullptr);
     int getId() const;
+    QString getName() const;
 
     void setUri(const QString &srcUri, SourceType srcType);
     void setAutoRestartConfig(bool enabled, int interval);
 
     void addDecodedService(std::shared_ptr<MediaService> service);
+
+    void routeServiceAudio(int sid, AudioOutput *audioOutput);
 
 public slots:
     void start();

@@ -31,6 +31,12 @@ int MediaSource::getId() const
 }
 
 //---------------------------------------------------------------------------------------
+QString MediaSource::getName() const
+{
+    return name;
+}
+
+//---------------------------------------------------------------------------------------
 void MediaSource::setUri(const QString &srcUri, SourceType srcType)
 {
     uri = srcUri;
@@ -61,6 +67,12 @@ void MediaSource::addDecodedService(std::shared_ptr<MediaService> service)
 }
 
 //---------------------------------------------------------------------------------------
+void MediaSource::routeServiceAudio(int sid, AudioOutput *audioOutput)
+{
+    demuxer->routeServiceAudio(sid, audioOutput);
+}
+
+//---------------------------------------------------------------------------------------
 void MediaSource::start()
 {
     manualStopped = false;
@@ -72,6 +84,7 @@ void MediaSource::start()
 //---------------------------------------------------------------------------------------
 void MediaSource::stop()
 {
+    loggable.logMessage(objectName(), QtDebugMsg, "Manual stop.");
     manualStopped = true;
     QMetaObject::invokeMethod(demuxer, "stop", Qt::QueuedConnection);
 }

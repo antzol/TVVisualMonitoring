@@ -31,6 +31,7 @@ extern "C" {
 #include "audiodecoder.h"
 #include "audioframe.h"
 #include "audiolevelmeter.h"
+#include "audiooutput.h"
 #include "mediaservice.h"
 #include "mediawidget.h"
 #include "videodecoder.h"
@@ -69,7 +70,7 @@ public:
 
     QMediaPlayer::PlaybackState getCurrentState() const;
 
-    int getFirstProgramStreamByType(int programId, AVMediaType type);
+    std::optional<int> getFirstProgramStreamByType(int programId, AVMediaType type);
     int getFirstStreamByType(AVMediaType type);
 
     void addDecodedService(std::shared_ptr<MediaService> service);
@@ -84,7 +85,7 @@ public slots:
     void pause();
     void stop();
 
-    void writeAudioSampleToSink(const std::shared_ptr<AudioFrame> audioFrame);
+    void routeServiceAudio(int sid, AudioOutput *audioOutput);
 
 signals:
     void playbackStateChanged(QMediaPlayer::PlaybackState state);
@@ -144,9 +145,6 @@ private:
 
     // key - stream index
     std::vector<Decoder*> decoders;
-
-    QAudioSink *audioSink{nullptr};
-    QIODevice *audioOutput{nullptr};
 
     // key - sid in the stream
     std::unordered_map<int, std::shared_ptr<MediaService>> decodedServices;

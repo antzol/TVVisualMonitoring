@@ -32,7 +32,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     loadActiveConfig();
 
-    setFixedSize(sizeHint());
+    audioOutput = new AudioOutput(this);
+
+    connect(ui->toggleVolumeButton, &QPushButton::toggled, this, &MainWindow::toggleAudioVolume);
+    connect(ui->routeAudioStreamButton, &QPushButton::clicked, this, &MainWindow::routeAudioStream);
+
+    setMinimumWidth(sizeHint().width());
+    setFixedHeight(sizeHint().height());
 }
 
 //---------------------------------------------------------------------------------------
@@ -100,6 +106,29 @@ void MainWindow::updatePlaybackState(QMediaPlayer::PlaybackState state)
     auto stopButtonsIterator = stopButtons.find(sourceId);
     if (stopButtonsIterator != stopButtons.end())
         stopButtonsIterator->second->setEnabled(state != QMediaPlayer::StoppedState);
+}
+
+//---------------------------------------------------------------------------------------
+void MainWindow::toggleAudioVolume(bool unmute)
+{
+    ui->toggleVolumeButton->setIcon(QIcon(unmute ? ":/audio/mute" : ":/audio/unmute"));
+
+    disconnectAudioStream();
+
+    if (!unmute)
+        return;
+
+    connectAudioStream();
+}
+
+//---------------------------------------------------------------------------------------
+void MainWindow::routeAudioStream()
+{
+    if (ui->toggleVolumeButton->isChecked())
+    {
+        disconnectAudioStream();
+        connectAudioStream();
+    }
 }
 
 //---------------------------------------------------------------------------------------
@@ -177,6 +206,7 @@ void MainWindow::loadSources()
 
     sources.reserve(sourcesData.size());
     int row = 0;
+    std::map<QString, int> decodedServicesList;
     for (auto& [id, data] : sourcesData)
     {
         auto source = std::make_shared<MediaSource>(data.id, data.name);
@@ -211,12 +241,53 @@ void MainWindow::loadSources()
         for (auto serviceId : servicesInSource)
         {
             auto it = services.find(serviceId);
-            if (it != services.end())
-                source->addDecodedService(it->second);
+            if (it == services.end())
+                continue;
+
+            source->addDecodedService(it->second);
+
+            QString readableServiceName = QString("%1 / %2")
+                    .arg(it->second->getName(), source->getName());
+
+            decodedServicesList[readableServiceName] = it->second->getId();
         }
 
         sources[id] = std::move(source);
     }
+
+    for (auto& [name, id] : decodedServicesList)
+    {
+        ui->audioStreamsComboBox->addItem(name, id);
+    }
+}
+
+//---------------------------------------------------------------------------------------
+void MainWindow::disconnectAudioStream()
+{
+    audioOutput->reset();
+}
+
+//---------------------------------------------------------------------------------------
+void MainWindow::connectAudioStream()
+{
+    bool ok;
+
+    int serviceId = ui->audioStreamsComboBox->currentData().toInt(&ok);
+    if (!ok)
+        return;
+
+    auto serviceIterator = services.find(serviceId);
+    if (serviceIterator == services.end())
+        return;
+
+    int sid = serviceIterator->second->getSid();
+    int sourceId = serviceIterator->second->getSourceId();
+
+    auto sourceIterator = sources.find(sourceId);
+    if (sourceIterator == sources.end())
+        return;
+
+    sourceIterator->second->routeServiceAudio(sid, audioOutput);
 }
 
 //---------------------------------------------------------------------------------------
