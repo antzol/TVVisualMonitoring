@@ -34,9 +34,9 @@ int VideoDecoder::outputFrame(AVFrame *avFrame)
     }
     else
     {
-        if (!deinterlacingQueueHead)
+        if (!deinterlacer || !cropper)
             createDeinterlacingFiltersQueue(avFrame);
-        size = convertFrame(avFrame, deinterlacingQueueHead);
+        size = convertFrame(avFrame, deinterlacer);
     }
     return size;
 }
@@ -52,6 +52,12 @@ int VideoDecoder::convertFrame(AVFrame *avFrame, FFmpegFilter *filter)
 {
     int size = 0;
     int result;
+
+    /// FIXME: remove hardcoded crop filter setting
+    if (avFrame->interlaced_frame && isNeedCropLineTo704px(avFrame))
+        filter->setNextFilter(cropper);
+    else
+        filter->setNextFilter(nullptr);
 
     if (!filter->isReady())
     {
@@ -112,19 +118,7 @@ void VideoDecoder::createDeinterlacingFiltersQueue(AVFrame *avFrame)
 {
     loggable.logMessage(objectName(), QtDebugMsg, "Create deinterlacing filters queue...");
     deinterlacer = new FFmpegFilter("Deinterlacer");
-
-    /// FIXME: remove hardcoded crop filter setting
-    if (avFrame->width == 720 && avFrame->height == 576 &&
-            avFrame->sample_aspect_ratio.num == 16 && avFrame->sample_aspect_ratio.den == 11)
-    {
-        cropper = new FFmpegFilter("Predeinterlace Cropper");
-        cropper->setNextFilter(deinterlacer);
-        deinterlacingQueueHead = cropper;
-    }
-    else
-    {
-        deinterlacingQueueHead = deinterlacer;
-    }
+    cropper = new FFmpegFilter("Predeinterlace Cropper");
 }
 
 //---------------------------------------------------------------------------------------
@@ -189,6 +183,15 @@ void VideoDecoder::initCropper(AVFrame *frame)
 
     QString inputParams{args};
     cropper->init(filter, filterParams, inputParams);
+}
+
+//---------------------------------------------------------------------------------------
+bool VideoDecoder::isNeedCropLineTo704px(AVFrame *avFrame)
+{
+    return avFrame->width == 720 &&
+            avFrame->height == 576 &&
+            avFrame->sample_aspect_ratio.num == 16 &&
+            avFrame->sample_aspect_ratio.den == 11;
 }
 
 //---------------------------------------------------------------------------------------
