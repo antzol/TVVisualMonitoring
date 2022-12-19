@@ -24,6 +24,7 @@ public:
 
     int getSid() const;
 
+    int getId() const;
     void setSourceId(int newSourceId);
     int getSourceId() const;
 

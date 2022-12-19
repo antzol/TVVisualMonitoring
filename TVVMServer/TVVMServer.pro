@@ -17,6 +17,7 @@ SOURCES += \
     audio/audiolevelcalculator.cpp \
     audio/audiolevelmeter.cpp \
     audio/audiolevelwidget.cpp \
+    audio/audiooutput.cpp \
     audio/loudnesscalculator.cpp \
     configmanager.cpp \
     media/mediaservice.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     audio/audiolevelcalculator.h \
     audio/audiolevelmeter.h \
     audio/audiolevelwidget.h \
+    audio/audiooutput.h \
     audio/concretesamplesextractor.h \
     audio/loudnesscalculator.h \
     audio/samplesextractor.h \

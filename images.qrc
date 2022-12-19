@@ -3,5 +3,12 @@
         <file alias="pause">images/pause_icon.png</file>
         <file alias="play">images/play_icon.png</file>
         <file alias="stop">images/stop_icon.png</file>
+        <file alias="arrow_right">images/arrow_right.png</file>
+    </qresource>
+    <qresource prefix="/audio">
+        <file alias="decrease">images/decrease_volume.png</file>
+        <file alias="increase">images/increase_volume.png</file>
+        <file alias="mute">images/mute_sound.png</file>
+        <file alias="unmute">images/unmute_sound.png</file>
     </qresource>
 </RCC>

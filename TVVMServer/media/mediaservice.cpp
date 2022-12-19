@@ -49,6 +49,12 @@ int MediaService::getSid() const
 }
 
 //---------------------------------------------------------------------------------------
+int MediaService::getId() const
+{
+    return id;
+}
+
+//---------------------------------------------------------------------------------------
 void MediaService::setSourceId(int newSourceId)
 {
     sourceId = newSourceId;

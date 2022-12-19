@@ -9,6 +9,8 @@
 #include "configstructs.h"
 
 #include "loggable.h"
+
+#include "audiooutput.h"
 #include "mediaviewerwindow.h"
 #include "mediaservice.h"
 #include "mediasource.h"
@@ -31,6 +33,9 @@ public slots:
     void setStartButtonLocked(bool locked);
     void updatePlaybackState(QMediaPlayer::PlaybackState state);
 
+    void toggleAudioVolume(bool unmute);
+    void routeAudioStream();
+
 signals:
 
 
@@ -39,6 +44,9 @@ private:
     void loadMosaicWindows();
     void loadSources();
 
+    void disconnectAudioStream();
+    void connectAudioStream();
+
 
     Ui::MainWindow *ui;
     QGridLayout *sourcesLayout;
@@ -46,6 +54,8 @@ private:
     QMenu *mediaWindowsMenu;
 
     ConfigManager *configManager{nullptr};
+
+    AudioOutput *audioOutput{nullptr};
 
     std::optional<int> activeConfigId;
 

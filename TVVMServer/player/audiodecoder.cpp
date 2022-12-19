@@ -75,14 +75,17 @@ int AudioDecoder::inputChannelCount() const
 //---------------------------------------------------------------------------------------
 int AudioDecoder::outputFrame(AVFrame *avFrame)
 {
-    /// FIXME: временно выключено формирование AudioFrame во всех декодерах.
-    /// Позже необходимо будет включать только в одном (выводимом на звуковой выход).
     int size = 1;
-//    std::shared_ptr<AudioFrame> audioFrame(new AudioFrame(avFrame->pts));
 
-//    int size = audioFrame->fromAvFrame(avFrame);
-//    if (size)
-//        emit audioSampleReady(audioFrame);
+    static const QMetaMethod audioSampleReadySignal = QMetaMethod::fromSignal(&AudioDecoder::audioSampleReady);
+    if (isSignalConnected(audioSampleReadySignal))
+    {
+        std::shared_ptr<AudioFrame> audioFrame(new AudioFrame(avFrame->pts));
+
+        size = audioFrame->fromAvFrame(avFrame);
+        if (size)
+            emit audioSampleReady(audioFrame);
+    }
 
     if (levelMeter)
         levelMeter->receiveAudioSample(avFrame);

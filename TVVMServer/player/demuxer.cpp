@@ -69,10 +69,9 @@ QMediaPlayer::PlaybackState Demuxer::getCurrentState() const
 }
 
 //---------------------------------------------------------------------------------------
-/// TODO: return std::optional
-int Demuxer::getFirstProgramStreamByType(int programId, AVMediaType type)
+std::optional<int> Demuxer::getFirstProgramStreamByType(int programId, AVMediaType type)
 {
-    int idx = -1;
+    std::optional<int> idx;
     auto it = programs.find(programId);
     if (it != programs.end())
         idx = it->second->findFirstStreamByType(type);
@@ -187,10 +186,20 @@ void Demuxer::stop()
 }
 
 //---------------------------------------------------------------------------------------
-void Demuxer::writeAudioSampleToSink(const std::shared_ptr<AudioFrame> audioFrame)
+void Demuxer::routeServiceAudio(int sid, AudioOutput *audioOutput)
 {
-    if (audioOutput && audioSink)
-        audioOutput->write(audioFrame->getData(), audioFrame->getSize());
+    std::optional<int> streamIdx = getFirstProgramStreamByType(sid, AVMEDIA_TYPE_AUDIO);
+
+    if (!streamIdx)
+        return;
+
+    int idx = streamIdx.value();
+
+    if (idx < 0 || idx >= decoders.size() || !decoders[idx])
+        return;
+
+    AudioDecoder *audioDecoder = static_cast<AudioDecoder*>(decoders[idx]);
+    audioOutput->init(audioDecoder);
 }
 
 //---------------------------------------------------------------------------------------
