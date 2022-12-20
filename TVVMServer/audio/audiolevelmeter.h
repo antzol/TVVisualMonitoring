@@ -17,6 +17,9 @@ public:
     virtual ~AudioLevelMeter();
 
     void setChannelCount(int numberOfChannels);
+    void setSampleRate(int rate);
+    /// TODO: set update rate from the configuration
+    void setUpdateRate(int rate);
 
 public slots:
     void receiveAudioSample(AVFrame *avFrame);
@@ -28,6 +31,10 @@ private:
     void createSamplesExtractor(AVFrame *avFrame);
 
     int channelsCount{0};
+    int sampleRate{48000};
+    int updateRate{20};
+    int numberOfSamplesToUpdate{sampleRate / updateRate};
+    int sampleCount{0};
 
     std::unique_ptr<SamplesExtractor> samplesExtractor;
     std::unique_ptr<AudioLevelCalculator> levelCalculator;

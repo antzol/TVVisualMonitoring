@@ -691,6 +691,7 @@ std::optional<AudioDecoder*> Demuxer::prepareAudioDecoder(int streamIndex)
 
         std::shared_ptr<AudioLevelMeter> meter = std::make_shared<AudioLevelMeter>();
         meter->setChannelCount(inChannelsCount);
+        meter->setSampleRate(decoder->audioFormat().sampleRate());
         decoder->setAudioLevelMeter(meter);
 
         std::vector<int> sids = findServiceIdsByStream(streamIndex);
