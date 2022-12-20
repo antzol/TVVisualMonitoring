@@ -35,10 +35,11 @@ private:
     void initDeinterlacer(AVFrame *frame);
     void initCropper(AVFrame *frame);
 
+    bool isNeedCropLineTo704px(AVFrame *avFrame);
+
     QVideoFrame m_videoFrame;
     QVideoFrameFormat::PixelFormat m_pixelFormat;
 
-    FFmpegFilter *deinterlacingQueueHead{nullptr};
     FFmpegFilter *deinterlacer{nullptr};
     FFmpegFilter *cropper{nullptr};
 
