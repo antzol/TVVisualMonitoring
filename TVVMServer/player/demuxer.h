@@ -113,6 +113,8 @@ private:
 
     std::optional<VideoDecoder*> prepareVideoDecoder(int streamIndex);
     std::optional<AudioDecoder*> prepareAudioDecoder(int streamIndex);
+
+    void resetDecoders();
     void resetDecoder(int streamIndex);
 
     void reset();
