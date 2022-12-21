@@ -129,7 +129,7 @@
          </property>
          <property name="icon">
           <iconset resource="../images.qrc">
-           <normaloff>:/audio/unmute</normaloff>:/audio/unmute</iconset>
+           <normaloff>:/audio/mute</normaloff>:/audio/mute</iconset>
          </property>
          <property name="iconSize">
           <size>

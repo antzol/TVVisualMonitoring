@@ -199,7 +199,8 @@ void Demuxer::routeServiceAudio(int sid, AudioOutput *audioOutput)
         return;
 
     AudioDecoder *audioDecoder = static_cast<AudioDecoder*>(decoders[idx]);
-    audioOutput->init(audioDecoder);
+    QMetaObject::invokeMethod(audioOutput, "init", Qt::QueuedConnection,
+                              Q_ARG(AudioDecoder*, audioDecoder));
 }
 
 //---------------------------------------------------------------------------------------
