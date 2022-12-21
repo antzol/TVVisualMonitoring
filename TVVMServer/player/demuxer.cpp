@@ -199,7 +199,8 @@ void Demuxer::routeServiceAudio(int sid, AudioOutput *audioOutput)
         return;
 
     AudioDecoder *audioDecoder = static_cast<AudioDecoder*>(decoders[idx]);
-    audioOutput->init(audioDecoder);
+    QMetaObject::invokeMethod(audioOutput, "init", Qt::QueuedConnection,
+                              Q_ARG(AudioDecoder*, audioDecoder));
 }
 
 //---------------------------------------------------------------------------------------
@@ -520,7 +521,6 @@ void Demuxer::playing()
             }
         }
 
-
         av_packet_unref(receivedPacket);
         if (result < 0)
         {
@@ -574,7 +574,8 @@ bool Demuxer::prepareDecoders()
 {
     QString msg;
 
-    decoders.resize(streams.size());
+    resetDecoders();
+    decoders.resize(streams.size(), nullptr);
 
     bool ok = true;
     for (auto& [sid, service] : decodedServices)
@@ -718,6 +719,17 @@ std::optional<AudioDecoder*> Demuxer::prepareAudioDecoder(int streamIndex)
 }
 
 //---------------------------------------------------------------------------------------
+void Demuxer::resetDecoders()
+{
+    for (int i = 0; i < decoders.size(); ++i)
+    {
+        if (decoders[i])
+            resetDecoder(i);
+    }
+    decoders.clear();
+}
+
+//---------------------------------------------------------------------------------------
 void Demuxer::resetDecoder(int streamIndex)
 {
     if (streamIndex >= 0 && streamIndex < decoders.size() && decoders[streamIndex])
@@ -737,12 +749,7 @@ void Demuxer::reset()
     ready = false;
     startDTS = -1;
 
-    for (int i = 0; i < decoders.size(); ++i)
-    {
-        if (decoders[i])
-            resetDecoder(i);
-    }
-    decoders.clear();
+    resetDecoders();
 
     if (inputFormatContext)
         avformat_close_input(&inputFormatContext);

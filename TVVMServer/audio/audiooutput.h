@@ -20,11 +20,9 @@ public:
 
     void reset();
 
-    void init(AudioDecoder *audioDecoder);
-
 public slots:
+    void init(AudioDecoder *audioDecoder);
     void writeAudioSample(const std::shared_ptr<AudioFrame> audioFrame);
-
 
 private:
     QAudioSink *audioSink{nullptr};

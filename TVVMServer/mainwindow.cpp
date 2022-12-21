@@ -32,7 +32,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     loadActiveConfig();
 
-    audioOutput = new AudioOutput(this);
+    audioOutput = new AudioOutput();
+
+    audioThread = new QThread();
+    audioOutput->moveToThread(audioThread);
+    connect(audioThread, &QThread::finished, audioOutput, &QObject::deleteLater);
+    audioThread->start();
 
     connect(ui->toggleVolumeButton, &QPushButton::toggled, this, &MainWindow::toggleAudioVolume);
     connect(ui->routeAudioStreamButton, &QPushButton::clicked, this, &MainWindow::routeAudioStream);
@@ -44,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent)
 //---------------------------------------------------------------------------------------
 MainWindow::~MainWindow()
 {
+    audioThread->quit();
+    audioThread->wait();
+
     delete ui;
 }
 
@@ -111,7 +119,7 @@ void MainWindow::updatePlaybackState(QMediaPlayer::PlaybackState state)
 //---------------------------------------------------------------------------------------
 void MainWindow::toggleAudioVolume(bool unmute)
 {
-    ui->toggleVolumeButton->setIcon(QIcon(unmute ? ":/audio/mute" : ":/audio/unmute"));
+    ui->toggleVolumeButton->setIcon(QIcon(!unmute ? ":/audio/mute" : ":/audio/unmute"));
 
     disconnectAudioStream();
 

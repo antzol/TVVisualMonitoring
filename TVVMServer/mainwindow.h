@@ -56,6 +56,7 @@ private:
     ConfigManager *configManager{nullptr};
 
     AudioOutput *audioOutput{nullptr};
+    QThread *audioThread{nullptr};
 
     std::optional<int> activeConfigId;
 
