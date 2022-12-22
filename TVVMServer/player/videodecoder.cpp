@@ -167,7 +167,6 @@ void VideoDecoder::initCropper(AVFrame *frame)
     }
 
     QString filter{"crop"};
-//    QString filterParams = QString("%1:%2:0:0:0:1").arg(frame->width + frameFix).arg(frame->height);
     QString filterParams = QString("w=%1:h=%2:x=0:y=0").arg(frame->width + frameFix).arg(frame->height);
 
     char args[512];

@@ -48,6 +48,24 @@ std::optional<TvServiceWidget*> MediaViewerWindow::createTvServiceWidget(uint8_t
 }
 
 //---------------------------------------------------------------------------------------
+std::optional<RadioServiceWidget*> MediaViewerWindow::createRadioServiceWidget(uint8_t row,
+                                                                               uint8_t column,
+                                                                               const QString &serviceName)
+{
+    if (column >= numberOfColumns || row >= numberOfRows)
+    {
+        loggable.logMessage(objectName(), QtWarningMsg,
+                            "FAILED adding radio service widget: coordinates out of range!");
+        return std::nullopt;
+    }
+
+    RadioServiceWidget *wgt = new RadioServiceWidget(serviceName);
+    gridLayout->addWidget(wgt, row, column);
+
+    return wgt;
+}
+
+//---------------------------------------------------------------------------------------
 void MediaViewerWindow::clearCell(uint8_t row, uint8_t column)
 {
     QPoint p{row, column};

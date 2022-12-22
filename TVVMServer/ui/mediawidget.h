@@ -6,6 +6,7 @@
 #include <QLabel>
 
 #include "audiolevelwidget.h"
+#include "configstructs.h"
 
 class MediaWidget : public QWidget
 {
@@ -23,6 +24,8 @@ protected:
     QLabel *serviceNameLabel{nullptr};
     QLayout *audioIndicatorsLayout{nullptr};
     std::vector<AudioLevelWidget*> audioIndicators;
+
+    ServiceType serviceType;
 
 };
 

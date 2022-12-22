@@ -37,12 +37,6 @@ MediaWidget *MediaService::getMediaWidget() const
 }
 
 //---------------------------------------------------------------------------------------
-QVideoSink *MediaService::getVideoSink() const
-{
-    return videoSink;
-}
-
-//---------------------------------------------------------------------------------------
 int MediaService::getSid() const
 {
     return sid;
@@ -67,7 +61,7 @@ int MediaService::getSourceId() const
 }
 
 //---------------------------------------------------------------------------------------
-const QString &MediaService::getName() const
+QString MediaService::getName() const
 {
     return name;
 }
@@ -76,19 +70,6 @@ const QString &MediaService::getName() const
 ServiceType MediaService::getType() const
 {
     return type;
-}
-
-//---------------------------------------------------------------------------------------
-void MediaService::setVideoDecodeMultithreadingConfig(int threadCount, int threadType)
-{
-    videoDecodeThreadCount = threadCount;
-    videoDecodeThreadType = threadType;
-}
-
-//---------------------------------------------------------------------------------------
-std::tuple<int, int> MediaService::getVideoDecodeMultithreadingConfig() const
-{
-    return std::make_tuple(videoDecodeThreadCount, videoDecodeThreadType);
 }
 
 //---------------------------------------------------------------------------------------
