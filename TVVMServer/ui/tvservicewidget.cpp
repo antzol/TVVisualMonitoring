@@ -6,6 +6,7 @@
 TvServiceWidget::TvServiceWidget(const QString &serviceName, QWidget *parent)
     : MediaWidget(serviceName, parent)
 {
+    serviceType = ServiceType::TV;
     videoWidget = new QVideoWidget();
 
     mediaLayout = new QHBoxLayout();

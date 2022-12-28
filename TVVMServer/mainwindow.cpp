@@ -187,7 +187,16 @@ void MainWindow::loadMosaicWindows()
 
             QPoint pos(serviceData.row, serviceData.column);
 
-            auto wgt = mosaic->createTvServiceWidget(serviceData.row, serviceData.column, serviceData.name);
+            std::optional<MediaWidget*> wgt;
+            switch (serviceData.type)
+            {
+            case ServiceType::TV:
+                wgt = mosaic->createTvServiceWidget(serviceData.row, serviceData.column, serviceData.name);
+                break;
+            case ServiceType::Radio:
+                wgt = mosaic->createRadioServiceWidget(serviceData.row, serviceData.column, serviceData.name);
+                break;
+            }
 
             auto service = std::make_shared<MediaService>(id);
             service->setServiceData(serviceData.sid, serviceData.type, serviceData.name);

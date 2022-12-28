@@ -27,7 +27,17 @@ void MediaWidget::updateAudioIndicatorsCount(int audioChannelsCount)
 
     while (audioIndicators.size() < audioChannelsCount)
     {
-        AudioLevelWidget *indicator = new AudioLevelWidget();
+        Qt::Orientation orientation;
+        switch(serviceType)
+        {
+        case ServiceType::Radio:
+            orientation = Qt::Horizontal;
+            break;
+        default:
+            orientation = Qt::Vertical;
+        }
+
+        AudioLevelWidget *indicator = new AudioLevelWidget(orientation);
         audioIndicators.push_back(indicator);
 
         if (audioIndicatorsLayout)

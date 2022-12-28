@@ -104,6 +104,7 @@ void ViewerWindowsGroupBox::init()
     int configFieldNo = model->fieldIndex("configuration");
     int widthFieldNo = model->fieldIndex("width");
     int heightFieldNo = model->fieldIndex("height");
+    int monitorFieldNo = model->fieldIndex("monitor");
 
     model->setRelation(configFieldNo, QSqlRelation("configuration", "id", "name"));
 
@@ -112,6 +113,7 @@ void ViewerWindowsGroupBox::init()
     model->setHeaderData(configFieldNo, Qt::Horizontal, tr("Configuration"));
     model->setHeaderData(widthFieldNo, Qt::Horizontal, tr("Width"));
     model->setHeaderData(heightFieldNo, Qt::Horizontal, tr("Height"));
+    model->setHeaderData(monitorFieldNo, Qt::Horizontal, tr("Monitor"));
 
     ui->tableView->setModel(model);
     ui->tableView->setAlternatingRowColors(true);

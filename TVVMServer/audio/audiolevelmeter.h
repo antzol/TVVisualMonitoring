@@ -32,7 +32,7 @@ private:
 
     int channelsCount{0};
     int sampleRate{48000};
-    int updateRate{20};
+    int updateRate{40};
     int numberOfSamplesToUpdate{sampleRate / updateRate};
     int sampleCount{0};
 

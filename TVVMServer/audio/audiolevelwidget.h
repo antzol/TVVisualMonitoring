@@ -22,6 +22,7 @@ protected:
 
 private:
     void drawVerticalIndicator();
+    void drawHorizontalIndicator();
 
     Qt::Orientation orientation{Qt::Vertical};
 

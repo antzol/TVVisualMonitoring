@@ -24,6 +24,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     media/mediasource.cpp \
+    media/tvservice.cpp \
     player/audiodecoder.cpp \
     player/audioframe.cpp \
     player/decoder.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
     player/videoframe.cpp \
     ui/mediaviewerwindow.cpp \
     ui/mediawidget.cpp \
+    ui/radioservicewidget.cpp \
     ui/tvservicewidget.cpp
 
 HEADERS += \
@@ -52,6 +54,7 @@ HEADERS += \
     media/mediaservice.h \
     mainwindow.h \
     media/mediasource.h \
+    media/tvservice.h \
     player/audiodecoder.h \
     player/audioframe.h \
     player/decoder.h \
@@ -64,6 +67,7 @@ HEADERS += \
     player/videoframe.h \
     ui/mediaviewerwindow.h \
     ui/mediawidget.h \
+    ui/radioservicewidget.h \
     ui/tvservicewidget.h
 
 FORMS += \

@@ -54,6 +54,7 @@ struct MosaicWindowData
     QString name;
     int width;
     int height;
+    int monitor;
 };
 
 #endif // CONFIGSTRUCTS_H

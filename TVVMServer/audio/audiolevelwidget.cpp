@@ -6,12 +6,25 @@ AudioLevelWidget::AudioLevelWidget(Qt::Orientation orientationFlag, QWidget *par
     , orientation(orientationFlag)
     , range(upperBound - lowerBound)
     , emptyRange(range)
-    , zeroLine((upperBound - alignmentLevel) / range)
-    , overloadLine((upperBound - overloadAlarmLevel) / range)
     , level(lowerBound)
 {
     /// TODO: load parameters of the audio level widget from configuration (ini file)
     setMinimumSize(5, 5);
+
+    switch (orientation)
+    {
+    case Qt::Vertical:
+        setFixedWidth(5);
+        zeroLine = (upperBound - alignmentLevel) / range;
+        overloadLine = (upperBound - overloadAlarmLevel) / range;
+        break;
+    case Qt::Horizontal:
+        setFixedHeight(5);
+        zeroLine = 1 - fabs(alignmentLevel) / range;
+        overloadLine = 1 - fabs(overloadAlarmLevel) / range;
+        break;
+    }
+
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
@@ -43,15 +56,20 @@ void AudioLevelWidget::setLevel(double value)
 //---------------------------------------------------------------------------------------
 void AudioLevelWidget::paintEvent(QPaintEvent *)
 {
-    emptyRange = fabs(upperBound - level) / range;
-
     painter.begin(this);
     painter.setWindow(rect());
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(Qt::NoPen);
 
-    /// TODO: draw audio level widget with horizontal orientation.
-    drawVerticalIndicator();
+    switch (orientation)
+    {
+    case Qt::Vertical:
+        drawVerticalIndicator();
+        break;
+    case Qt::Horizontal:
+        drawHorizontalIndicator();
+        break;
+    }
 
     painter.end();
 }
@@ -59,6 +77,8 @@ void AudioLevelWidget::paintEvent(QPaintEvent *)
 //---------------------------------------------------------------------------------------
 void AudioLevelWidget::drawVerticalIndicator()
 {
+    emptyRange = fabs(upperBound - level) / range;
+
     if(level > overloadAlarmLevel)
     {
         painter.setBrush(overloadSignalColor);
@@ -107,4 +127,52 @@ void AudioLevelWidget::drawVerticalIndicator()
 }
 
 //---------------------------------------------------------------------------------------
+void AudioLevelWidget::drawHorizontalIndicator()
+{
+    emptyRange = 1 - fabs(upperBound - level) / range;
 
+    if(level > overloadAlarmLevel)
+    {
+        painter.setBrush(overloadSignalColor);
+        QRect overloadBar(overloadLine * width(), 0, emptyRange * width(), height());
+        painter.drawRect(overloadBar);
+
+        painter.setBrush(alarmSignalColor);
+        QRect alarmBar(zeroLine * width(), 0, overloadLine * width(), height());
+        painter.drawRect(alarmBar);
+
+        painter.setBrush(normalSignalColor);
+        QRect normalBar(0, 0, zeroLine * width(), height());
+        painter.drawRect(normalBar);
+    }
+    else if(level > alignmentLevel)
+    {
+        painter.setBrush(alarmSignalColor);
+        QRect alarmBar(zeroLine * width(), 0, emptyRange * width(), height());
+        painter.drawRect(alarmBar);
+
+        painter.setBrush(normalSignalColor);
+        QRect normalBar(0, 0, zeroLine * width(), height());
+        painter.drawRect(normalBar);
+    }
+    else
+    {
+        painter.setBrush(normalSignalColor);
+        QRect normalBar(0, 0, emptyRange * width(), height());
+        painter.drawRect(normalBar);
+    }
+
+    painter.setBrush(emptyColor);
+    QRectF leftEmptyBar((1 - emptyRange) * width(), 0, width(), height());
+    painter.drawRect(leftEmptyBar);
+
+    // alignment line
+    painter.setPen(QPen(Qt::white, 1));
+    painter.drawLine(QLineF(zeroLine * width(), 0, zeroLine * width(), height()));
+
+    // overload line
+    painter.setPen(QPen(Qt::yellow, 1));
+    painter.drawLine(QLineF(overloadLine * width(), 0, overloadLine * width(), height()));
+}
+
+//---------------------------------------------------------------------------------------

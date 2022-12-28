@@ -3,6 +3,13 @@
 
 #include <QString>
 
+enum class CellType
+{
+    Empty = 0,
+    TvWidget = 1,
+    RadioWidgets = 2
+};
+
 enum ServiceType
 {
     TV = 1,

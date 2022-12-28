@@ -6,6 +6,7 @@
 #include <QGridLayout>
 
 #include "loggable.h"
+#include "radioservicewidget.h"
 #include "tvservicewidget.h"
 
 class MediaViewerWindow : public QDialog
@@ -15,6 +16,7 @@ public:
     MediaViewerWindow(uint8_t w, uint8_t h, const QString &name, QWidget *parent = nullptr);
 
     std::optional<TvServiceWidget*> createTvServiceWidget(uint8_t row, uint8_t column, const QString &serviceName);
+    std::optional<RadioServiceWidget*> createRadioServiceWidget(uint8_t row, uint8_t column, const QString &serviceName);
 
 
     void clearCell(uint8_t row, uint8_t column);

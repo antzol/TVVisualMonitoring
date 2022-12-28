@@ -111,10 +111,11 @@ std::unordered_map<int, ServiceData> ConfigManager::getServices(int mosaicWindow
     QSqlQuery query;
     bool ok;
 
-    ok = query.prepare("SELECT s.id, s.name, s.sid, s.source, s.type, smv.column, smv.row "
+    ok = query.prepare("SELECT s.id, s.name, s.sid, s.source, s.type, mc.cell_row, mc.cell_column "
                        "FROM service AS s "
                        "INNER JOIN service_mosaic_viewer AS smv ON s.id = smv.service "
-                       "WHERE smv.viewer = :viewerId AND s.enabled = 1 "
+                       "INNER JOIN mosaic_cell AS mc ON smv.cell = mc.id "
+                       "WHERE mc.viewer = :viewerId AND s.enabled = 1 "
                        "ORDER BY s.name");
 
     if (!ok)
@@ -144,8 +145,8 @@ std::unordered_map<int, ServiceData> ConfigManager::getServices(int mosaicWindow
         service.sourceId = query.value("source").toInt();
 
         service.windowId = mosaicWindowId;
-        service.column = query.value("column").toInt();
-        service.row = query.value("row").toInt();
+        service.column = query.value("cell_column").toInt();
+        service.row = query.value("cell_row").toInt();
 
         services[service.id] = service;
 

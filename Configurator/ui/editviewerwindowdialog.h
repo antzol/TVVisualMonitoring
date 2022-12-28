@@ -7,6 +7,7 @@
 #include <QDataWidgetMapper>
 #include <QSqlRelationalTableModel>
 
+#include "configstructs.h"
 #include "loggable.h"
 
 namespace Ui {
@@ -24,10 +25,12 @@ public:
 public slots:
     void checkAndSubmitMainData();
 
+    void updateWidgetList();
+
     void updateSelectedCell();
 
-    void setServiceToCell();
-    void clearCell();
+    void setWidgetToSelectedCell();
+    void clearSelectedCell();
 
 signals:
     void modelUpdated();
@@ -35,16 +38,33 @@ signals:
 private:
     void configureMainUi();
     void configureLayoutUi();
+    void fillCellTypeList();
 
     void fillExistingDataFields();
     void createNewRecord();
 
     void updateServiceData();
     void updateGridLayout();
-    void updateServiceList();
-    void removeInvalidCellsFromDB();
+    void updateServiceWidgetList();
 
-    std::tuple<QString, QString> getServiceByCoordinate(int row, int column);
+    void updateCellsInDB();
+    void processConfigurationChange();
+    void removeOutOfRangeCells();
+    void insertEmptyCell(int row, int column, int viewer);
+
+    std::optional<CellType> getCellType(int row, int column);
+    void setCellType(int row, int column, CellType type);
+
+    void clearCell(int row, int column);
+    void clearContentFromCell(int row, int column);
+    void clearServicesFromCell(int row, int column);
+
+    void addServiceToCell();
+
+    void fillCell(int row, int column);
+    CellType fillCellWithType(int row, int column);
+    void fillCellWithServiceData(int row, int column);
+    std::optional<QPushButton*> getCellWidget(int row, int column);
 
     Ui::EditViewerWindowDialog *ui;
     Loggable loggable;
