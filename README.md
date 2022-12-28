@@ -20,6 +20,6 @@ The project currently consists of
 
 ![TVVM - Viewer Window](./docs/screenshots/tvvm-server/server%20-%20viewer%20window%2001.png)
 
-Volume indicators 3 radio programs in 1 cell (1 row, 1 column). 2 TV channels are scrambled (line 1, columns 2 and 3).
+Volume indicators of 3 radio programs in 1 cell (1 row, 1 column). 2 TV channels are scrambled (row 1, columns 2 and 3).
 
-![Volume level indicators 3 radio programs in 1 cell](./docs/screenshots/tvvm-server/server%20-%20viewer%20window%2002%20-%203%20radio%20in%201%20cell.png)
+![Volume level indicators of 3 radio programs in 1 cell](./docs/screenshots/tvvm-server/server%20-%20viewer%20window%2002%20-%203%20radio%20in%201%20cell.png)
