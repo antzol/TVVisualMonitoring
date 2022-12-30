@@ -497,9 +497,10 @@ void Demuxer::playing()
         readingErrorCount = 0;
 
         int streamIndex = receivedPacket->stream_index;
-        if (streamIndex >= 0 && streamIndex < decoders.size() &&
-                (streams[streamIndex]->type == AVMEDIA_TYPE_VIDEO ||
-                 streams[streamIndex]->type == AVMEDIA_TYPE_AUDIO))
+        if (streamIndex >= 0 && streamIndex < decoders.size()
+//                && (streams[streamIndex]->type == AVMEDIA_TYPE_VIDEO
+//                    || streams[streamIndex]->type == AVMEDIA_TYPE_AUDIO)
+                )
         {
             Decoder *decoder = decoders[streamIndex];
             if (decoder && decoder->isOpen())
