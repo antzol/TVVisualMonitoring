@@ -6,6 +6,8 @@
 #include <QGroupBox>
 #include <QToolButton>
 #include <QPushButton>
+#include <QScreen>
+#include <QWindow>
 
 #include <QThread>
 
@@ -64,13 +66,24 @@ void MainWindow::openMosaicWindow()
         return;
 
     auto it = mosaicWindowActions.find(act);
-    if (it != mosaicWindowActions.end())
-    {
-        QString msg = QString("Open mosaic window \"%1\"").arg(it->second->windowTitle());
-        loggable.logMessage(objectName(), QtDebugMsg, msg);
-        it->second->show();
-        it->second->raise();
-    }
+    if (it == mosaicWindowActions.end())
+        return;
+
+    QString msg = QString("Open mosaic window \"%1\"").arg(it->second->windowTitle());
+    loggable.logMessage(objectName(), QtDebugMsg, msg);
+    it->second->show();
+    it->second->raise();
+
+    // In the config database, the numbering of monitors starts from 1
+    int monitor = it->second->getMonitorNumber() - 1;
+
+    QList<QScreen*> screenList = QGuiApplication::screens();
+
+    if (monitor < 0 || monitor >= screenList.size())
+        return;
+
+    it->second->windowHandle()->setScreen(screenList.at(monitor));
+    it->second->showFullScreen();
 }
 
 //---------------------------------------------------------------------------------------
@@ -163,6 +176,7 @@ void MainWindow::loadMosaicWindows()
     for (auto& window : windows)
     {
         MediaViewerWindow *mosaic = new MediaViewerWindow(window.width, window.height, window.name, this);
+        mosaic->setMonitorNumber(window.monitor);
         mosaicWindows[window.id] = mosaic;
 
         QAction *act = new QAction(window.name, this);

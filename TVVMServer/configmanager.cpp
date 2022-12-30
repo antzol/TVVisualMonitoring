@@ -89,6 +89,7 @@ std::vector<MosaicWindowData> ConfigManager::getMosaicWindows(int configId)
         window.name = query.value("name").toString();
         window.width = query.value("width").toInt();
         window.height = query.value("height").toInt();
+        window.monitor = query.value("monitor").toInt();
 
         msg = QString("Mosaic viewer loaded: \"%1\", size %2x%3")
                 .arg(window.name).arg(window.width).arg(window.height);

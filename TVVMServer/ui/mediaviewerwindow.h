@@ -15,6 +15,9 @@ class MediaViewerWindow : public QDialog
 public:
     MediaViewerWindow(uint8_t w, uint8_t h, const QString &name, QWidget *parent = nullptr);
 
+    void setMonitorNumber(int num);
+    int getMonitorNumber() const;
+
     std::optional<TvServiceWidget*> createTvServiceWidget(uint8_t row, uint8_t column, const QString &serviceName);
     std::optional<RadioServiceWidget*> createRadioServiceWidget(uint8_t row, uint8_t column, const QString &serviceName);
 
@@ -27,6 +30,7 @@ protected:
 private:
     int numberOfColumns;
     int numberOfRows;
+    int monitorNumber{0};
 
     QGridLayout *gridLayout;
 

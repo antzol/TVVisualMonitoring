@@ -28,6 +28,18 @@ MediaViewerWindow::MediaViewerWindow(uint8_t w, uint8_t h, const QString &name, 
 }
 
 //---------------------------------------------------------------------------------------
+void MediaViewerWindow::setMonitorNumber(int num)
+{
+    monitorNumber = num;
+}
+
+//---------------------------------------------------------------------------------------
+int MediaViewerWindow::getMonitorNumber() const
+{
+    return monitorNumber;
+}
+
+//---------------------------------------------------------------------------------------
 std::optional<TvServiceWidget*> MediaViewerWindow::createTvServiceWidget(uint8_t row, uint8_t column,
                                                                           const QString &serviceName)
 {
