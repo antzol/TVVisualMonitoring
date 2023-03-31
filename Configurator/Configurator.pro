@@ -2,7 +2,7 @@ QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++20
 
 TARGET = tvvm-configurator
 
@@ -12,45 +12,49 @@ RC_ICONS = config_icon.ico
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += ../logger ui
+INCLUDEPATH += ../logger ui tree_model models
 
 SOURCES += \
     ../logger/loggable.cpp \
     ../logger/logger.cpp \
+    configmanager.cpp \
     main.cpp \
     mainwindow.cpp \
+    models/configsproxymodel.cpp \
+    tree_model/configfoldertreeitem.cpp \
+    tree_model/configtreeitem.cpp \
+    tree_model/servicetreeitem.cpp \
+    tree_model/sourcefoldertreeitem.cpp \
+    tree_model/sourcetreeitem.cpp \
+    tree_model/treeitem.cpp \
+    tree_model/treemodel.cpp \
+    tree_model/viewerwindowfoldertreeitem.cpp \
+    tree_model/viewerwindowtreeitem.cpp \
     ui/checkboxdelegate.cpp \
-    ui/configsgroupbox.cpp \
-    ui/editservicedialog.cpp \
-    ui/editsourcedialog.cpp \
-    ui/editviewerwindowdialog.cpp \
-    ui/servicesgroupbox.cpp \
-    ui/sourcesgroupbox.cpp \
-    ui/viewerwindowsgroupbox.cpp
+    ui/configsform.cpp
 
 HEADERS += \
     ../logger/loggable.h \
     ../logger/logger.h \
+    configmanager.h \
     configstructs.h \
     mainwindow.h \
+    models/configsproxymodel.h \
+    tree_model/configfoldertreeitem.h \
+    tree_model/configtreeitem.h \
+    tree_model/servicetreeitem.h \
+    tree_model/sourcefoldertreeitem.h \
+    tree_model/sourcetreeitem.h \
+    tree_model/treeitem.h \
+    tree_model/treemodel.h \
+    tree_model/viewerwindowfoldertreeitem.h \
+    tree_model/viewerwindowtreeitem.h \
     ui/checkboxdelegate.h \
-    ui/configsgroupbox.h \
-    ui/editservicedialog.h \
-    ui/editsourcedialog.h \
-    ui/editviewerwindowdialog.h \
-    ui/servicesgroupbox.h \
-    ui/sourcesgroupbox.h \
-    ui/viewerwindowsgroupbox.h
+    ui/configsform.h
 
 FORMS += \
     mainwindow.ui \
-    ui/configsgroupbox.ui \
-    ui/editservicedialog.ui \
-    ui/editsourcedialog.ui \
-    ui/editviewerwindowdialog.ui \
-    ui/servicesgroupbox.ui \
-    ui/sourcesgroupbox.ui \
-    ui/viewerwindowsgroupbox.ui
+    ui/configsform.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

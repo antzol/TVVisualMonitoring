@@ -2,7 +2,7 @@ QT       += core gui sql multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++20
 TARGET = tvvm-server
 
 RC_ICONS = tv_icon.ico
