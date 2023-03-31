@@ -13,6 +13,15 @@ The project currently consists of
 
 - Measurement of the level of audio signals according to [recommendations ITU-R BS.1770-4 «Algorithms to measure audio programme loudness and true-peak audio level»](https://www.itu.int/dms_pubrec/itu-r/rec/bs/R-REC-BS.1770-4-201510-I!!PDF-E.pdf).
 
+## Project build requirements
+
+- Qt framework - 6.2 or later (version 6.2.4 was used during development)
+- C++17 compiler (developed using MSVC2019)
+
+## Requirements
+
+- Operational system:
+  - Windows 10 21H2 or later
 
 ## Screenshots
 
